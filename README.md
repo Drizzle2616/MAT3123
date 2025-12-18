@@ -132,7 +132,7 @@ feature engineering이나 전처리에 크게 의존한다는 점을 보여준�
 
 --------------------------------------------------
 
-8. References
+7. References
 
 - MNIST Dataset
 - Lecture notes of Machine Learning and Applications
