@@ -1,4 +1,4 @@
-Handwritten Digit Recognition
+## Handwritten Digit Recognition
 Classical Machine Learning vs Deep Learning Comparison
 
 1. Introduction
