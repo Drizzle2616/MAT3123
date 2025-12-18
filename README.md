@@ -132,20 +132,6 @@ feature engineering이나 전처리에 크게 의존한다는 점을 보여준�
 
 --------------------------------------------------
 
-7. Repository Structure
-
-.
-├── classical_ml
-│   └── pca_logistic.ipynb
-├── deep_learning
-│   └── cnn_model.py
-├── data
-├── results
-│   └── accuracy_comparison.png
-└── README.md
-
---------------------------------------------------
-
 8. References
 
 - MNIST Dataset
