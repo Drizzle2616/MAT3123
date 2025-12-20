@@ -1,139 +1,103 @@
-## Handwritten Digit Recognition
-Classical Machine Learning vs Deep Learning Comparison
+Model Complexity Comparison
+Linear Regression vs Decision Tree vs Random Forest
 
-1. Introduction
+1. Overview
 
-본 프로젝트는 손글씨 숫자 인식(handwritten digit recognition) 문제를 대상으로
-전통적인 머신러닝 기법과 딥러닝 기법을 비교·분석하는 것을 목표로 한다.
+본 프로젝트는 동일한 회귀(regression) 문제에서
+모델 복잡도(model complexity)가 일반화 성능(generalization)과 과적합(overfitting)에
+어떤 영향을 주는지 비교·분석하는 것을 목표로 한다.
 
-이 프로젝트는 선수과목인 "수학과 프로그래밍" 수업에서 수행했던
-CNN 기반 손글씨 인식 프로젝트를 기반으로 하며,(https://github.com/Drizzle2616/24-1-HandToText)
-이번 "기계학습과응용" 수업에서 학습한 머신러닝 알고리즘을 추가로 적용하여
-모델 간 차이와 특성을 비교한다.
+비교 모델은 다음과 같다.
 
-이를 통해 수업에서 배운
-- 선형 모델
-- 차원 축소(PCA)
-- 분류 알고리즘
-- 딥러닝 모델의 특징
+- Linear Regression (단순 선형 모델)
+- Decision Tree Regressor (비선형 모델, 높은 분산 가능)
+- Random Forest Regressor (앙상블로 분산 감소 기대)
 
-을 실제 문제에 적용하고,
-머신러닝과 딥러닝의 접근 방식 차이를 실험적으로 확인한다.
+본 프로젝트는 "기계학습과응용" 수업에서 학습한
+선형 회귀, 결정트리, 랜덤포레스트의 핵심 아이디어를
+하나의 문제에 일관된 실험 설계로 적용해 확인하는 데 초점을 둔다.
 
 --------------------------------------------------
 
 2. Dataset
 
-본 프로젝트에서는 MNIST 손글씨 숫자 데이터셋을 사용한다.
+본 프로젝트는 scikit-learn 내장 데이터셋인 California Housing을 사용한다.
 
-입력 데이터
-- 28x28 크기의 흑백 손글씨 숫자 이미지
+- 입력: 여러 개의 수치형 특성(feature)
+- 출력: 주택 가격(연속값)
 
-출력 라벨
-- 0부터 9까지의 숫자 클래스
-
-이미지는 모델에 따라 서로 다른 방식으로 처리된다.
-
-전통적 머신러닝 모델
-- 이미지 데이터를 1차원 벡터로 변환하여 사용
-
-딥러닝 모델(CNN)
-- 이미지의 공간적 구조를 유지한 채 입력
+내장 데이터셋을 사용하여
+추가 다운로드 없이 재현 가능한 실험을 구성한다.
 
 --------------------------------------------------
 
 3. Methods
 
-3.1 Classical Machine Learning Approach
-PCA + Logistic Regression
+3.1 Train/Test Split
 
-전통적인 머신러닝 방식으로 PCA(Principal Component Analysis)와
-Logistic Regression을 사용하였다.
+- 데이터를 train/test로 분리한다.
+- 동일한 분리 기준(random_state)을 사용하여 공정한 비교를 수행한다.
 
-처리 과정은 다음과 같다.
+3.2 Models
 
-1. 각 이미지를 1차원 벡터로 변환한다
-2. PCA를 적용하여 고차원 데이터를 저차원으로 축소한다
-3. 축소된 특징 공간에서 Logistic Regression으로 숫자를 분류한다
+(1) Linear Regression
+- 선형 관계를 가정하는 가장 단순한 기준 모델이다.
 
-이 방식은 수업 초반에 배운 선형 분류 모델과
-차원 축소 기법의 역할을 확인하기에 적합하다.
+(2) Decision Tree Regressor
+- 비선형 패턴을 강하게 학습할 수 있으나
+  과적합 위험이 커질 수 있다.
+- max_depth를 변화시키며 모델 복잡도를 조절한다.
 
---------------------------------------------------
+(3) Random Forest Regressor
+- 여러 트리를 결합하는 앙상블 모델이다.
+- 단일 트리 대비 분산을 줄여 일반화 성능을 개선할 수 있다.
 
-3.2 Deep Learning Approach
-Convolutional Neural Network (CNN)
+3.3 Evaluation Metrics
 
-딥러닝 방식으로는 기존에 구현한 CNN 기반 손글씨 인식 모델을 사용하였다.
+회귀 성능 비교를 위해 다음 지표를 사용한다.
 
-CNN 모델의 특징은 다음과 같다.
+- RMSE (낮을수록 좋다)
+- R^2 (높을수록 좋다)
 
-- 이미지의 공간적 구조를 직접 학습
-- 별도의 feature engineering 없이 특징 자동 추출
-- 복잡한 패턴 학습에 유리
-
-해당 모델은 합성곱 계층과 풀링 계층을 사용하여
-손글씨 숫자의 형태적 특징을 효과적으로 학습한다.
+또한 train 성능과 test 성능의 차이를 통해
+과적합 여부를 함께 해석한다.
 
 --------------------------------------------------
 
-4. Results
+4. Results (How to Reproduce)
 
-각 모델의 분류 성능을 정확도 기준으로 비교하였다.
+1) 의존성 설치
+pip install -U numpy pandas matplotlib scikit-learn
 
-Model: PCA + Logistic Regression
-Accuracy: 상대적으로 낮음
+2) 실행
+python src/train_compare.py
 
-Model: CNN
-Accuracy: 높은 정확도
+실행 결과로 다음이 생성된다.
 
-전통적인 머신러닝 모델은 기본적인 숫자 분류는 가능했으나,
-이미지의 복잡한 공간적 패턴을 충분히 반영하는 데 한계가 있었다.
-
-반면 CNN 모델은 이미지의 국소적 특징을 효과적으로 학습하여
-더 높은 분류 성능을 보였다.
+- results/metrics.csv
+- results/comparison_plot.png
 
 --------------------------------------------------
 
-5. Discussion
+5. Discussion (Expected Findings)
 
-PCA + Logistic Regression 모델은
-차원 축소 이후에도 기본적인 분류 성능을 보였으나,
-이미지 데이터의 공간적 정보를 직접 활용하지 못한다는 한계가 있었다.
+- Linear Regression은 단순하여 과적합 위험이 낮지만
+  비선형 관계를 충분히 설명하지 못할 수 있다.
 
-이는 전통적인 머신러닝 모델이
-feature engineering이나 전처리에 크게 의존한다는 점을 보여준다.
+- Decision Tree는 학습 데이터를 매우 잘 맞출 수 있으나
+  깊이가 커질수록 train 성능은 좋아지고 test 성능은 악화되는
+  과적합 패턴이 나타날 수 있다.
 
-반면 CNN은 이미지의 공간적 구조를 그대로 입력으로 사용하여
-특징을 자동으로 학습한다는 점에서
-딥러닝 모델의 강점을 명확히 확인할 수 있었다.
-
-이 결과는 수업에서 배운
-- 선형 모델의 한계
-- 딥러닝의 표현력
-- 문제 유형에 따른 모델 선택의 중요성
-
-을 실험적으로 확인한 사례이다.
+- Random Forest는 여러 트리를 평균화하여 분산을 줄이므로
+  단일 트리 대비 test 성능이 더 안정적으로 개선되는 경향이 있다.
 
 --------------------------------------------------
 
 6. Conclusion
 
-본 프로젝트에서는 손글씨 숫자 인식 문제를 대상으로
-전통적인 머신러닝 기법과 딥러닝 기법을 비교하였다.
+본 프로젝트는 모델 복잡도가 증가할수록
+표현력은 증가하지만 과적합 위험도 함께 증가할 수 있음을 확인한다.
 
-그 결과,
-- 단순한 선형 모델은 기본적인 분류는 가능하지만 성능에 한계가 있으며
-- 딥러닝 모델은 복잡한 패턴을 효과적으로 학습할 수 있음을 확인하였다
-
-이를 통해 "기계학습과응용" 수업에서 배운
-머신러닝 알고리즘의 발전 흐름과
-각 모델의 적용 범위를 실제 문제를 통해 이해할 수 있었다.
-
---------------------------------------------------
-
-7. References
-
-- MNIST Dataset
-- Lecture notes of Machine Learning and Applications
-- Previous project: HandToText (CNN-based handwritten digit recognition)
+또한 앙상블(Random Forest)은
+단일 고복잡도 모델(Decision Tree)의 분산 문제를 완화하여
+일반화 성능을 개선할 수 있음을 실험적으로 보여준다.
