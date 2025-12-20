@@ -7,7 +7,7 @@ Classical Machine Learning vs Deep Learning Comparison
 전통적인 머신러닝 기법과 딥러닝 기법을 비교·분석하는 것을 목표로 한다.
 
 이 프로젝트는 선수과목인 "수학과 프로그래밍" 수업에서 수행했던
-CNN 기반 손글씨 인식 프로젝트를 기반으로 하며,
+CNN 기반 손글씨 인식 프로젝트를 기반으로 하며,(https://github.com/Drizzle2616/24-1-HandToText)
 이번 "기계학습과응용" 수업에서 학습한 머신러닝 알고리즘을 추가로 적용하여
 모델 간 차이와 특성을 비교한다.
 
